@@ -1,5 +1,8 @@
 package com.TimetrackerBackend.TimetrackerBackend.models;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -94,6 +97,18 @@ public class User {
 
     public void addTask(Task task) {
         tasks.add(task);
+    }
+
+    public List<Task> getTasksForDates(LocalDate startDate, LocalDate endDate) {
+        List<Task> tasksForDates = new ArrayList<Task>();
+        for (Task task : tasks) {
+            if ((task.getDate().isEqual(startDate) || task.getDate().isAfter(startDate))
+                    && (task.getDate().isEqual(endDate) || task.getDate().isBefore(endDate))) {
+                tasksForDates.add(task);
+            }
+        }
+
+        return tasksForDates;
     }
 
     public List<Task> getTasks() {

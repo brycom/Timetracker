@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
-import com.TimetrackerBackend.TimetrackerBackend.models.Task;
 import com.TimetrackerBackend.TimetrackerBackend.models.User;
 
 @Service
