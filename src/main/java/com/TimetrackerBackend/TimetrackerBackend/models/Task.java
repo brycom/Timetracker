@@ -1,5 +1,8 @@
 package com.TimetrackerBackend.TimetrackerBackend.models;
 
+import java.time.Duration;
+import java.time.LocalTime;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -82,6 +85,15 @@ public class Task {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public long getTimeSpent() {
+        LocalTime startTimeObj = LocalTime.parse(this.startTime);
+        LocalTime endTimeObj = LocalTime.parse(this.endTime);
+
+        Duration timeSpent = Duration.between(startTimeObj, endTimeObj);
+
+        return timeSpent.toMinutes();
     }
 
 }

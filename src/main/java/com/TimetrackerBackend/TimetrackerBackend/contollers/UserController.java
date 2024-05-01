@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.TimetrackerBackend.TimetrackerBackend.models.Statistics;
 import com.TimetrackerBackend.TimetrackerBackend.models.Task;
 import com.TimetrackerBackend.TimetrackerBackend.models.User;
 import com.TimetrackerBackend.TimetrackerBackend.services.TaskService;
@@ -46,10 +47,10 @@ public class UserController {
         return userService.getTotalTimeInMinutes(id);
     }
 
-    @GetMapping("/statistics")
+    @GetMapping("/statistics/{id}")
     @ResponseBody
-    public List<Task> getStatistics() {
-        return taskService.getStatistics();
+    public Statistics getStatistics(@PathVariable String id) {
+        return taskService.getStatistics(id);
     }
 
     @PostMapping("/login")

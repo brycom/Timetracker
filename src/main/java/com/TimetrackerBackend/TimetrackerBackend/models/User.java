@@ -92,6 +92,10 @@ public class User {
         this.token = token;
     }
 
+    public void addTask(Task task) {
+        tasks.add(task);
+    }
+
     public List<Task> getTasks() {
         return tasks;
     }
