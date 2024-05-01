@@ -23,9 +23,9 @@ public class UserService {
         return mongoOperations.findAll(User.class);
     }
 
-    public int getTotalTimeInMinutes() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTotalTimeInMinutes'");
+    public int getTotalTimeInMinutes(String id) {
+
+        return mongoOperations.findById(id, User.class).getTotalTimeInMinutes();
     }
 
     public User login(User user) {

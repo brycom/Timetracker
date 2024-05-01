@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.TimetrackerBackend.TimetrackerBackend.models.Task;
@@ -38,10 +40,10 @@ public class UserController {
         return userService.createUser(user);
     }
 
-    @GetMapping("/totaltime")
+    @GetMapping("/totaltime/{id}")
     @ResponseBody
-    public int getTotalTimeInMinutes() {
-        return userService.getTotalTimeInMinutes();
+    public int getTotalTimeInMinutes(@PathVariable String id) {
+        return userService.getTotalTimeInMinutes(id);
     }
 
     @GetMapping("/statistics")
