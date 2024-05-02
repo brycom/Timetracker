@@ -3,6 +3,8 @@ package com.TimetrackerBackend.TimetrackerBackend.models;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,6 +20,17 @@ public class Task {
     private String endTime;
 
     public Task() {
+    }
+
+    public Task(String headline, String description, String category, LocalDate date, String startTime,
+            String endTime) {
+        this.id = UUID.randomUUID().toString();
+        this.headline = headline;
+        this.description = description;
+        this.category = category;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public Task(String id, String headline, String description, String category, LocalDate date, String startTime,

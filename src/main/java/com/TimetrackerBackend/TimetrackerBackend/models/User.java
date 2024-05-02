@@ -134,4 +134,8 @@ public class User {
         this.totalTimeInMinutes = totalTimeInMinutes;
     }
 
+    public void addDefaultTask(Task task) {
+        defaultTasks.add(task);
+    }
+
 }

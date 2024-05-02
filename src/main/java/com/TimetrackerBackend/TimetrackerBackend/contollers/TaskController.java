@@ -1,9 +1,11 @@
 package com.TimetrackerBackend.TimetrackerBackend.contollers;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
-
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,10 +36,23 @@ public class TaskController {
         return taskService.addTaskToUser(task, userId);
     }
 
-    /*     @GetMapping("/statistics/{id}")
+    @GetMapping("/defaulttasks/{userId}")
     @ResponseBody
-    public Statistics getStatistics(@PathVariable String id) {
-        return taskService.getStatistics(id);
+    public List<Task> getDefaultTaskUser(@PathVariable String userId) {
+        return taskService.getDefaultTaskUser(userId);
     }
-     */
+
+    @GetMapping("/defaulttasks")
+    @ResponseBody
+    public List<Task> getDefaultTasks() {
+        return taskService.getDefaultTasks();
+    }
+
+    @PostMapping("/defaulttasks/{userId}")
+    @ResponseBody
+    public Task createDefaultTaskForUser(@RequestBody Task task, @PathVariable String userId) {
+        System.out.println(task.getHeadline() + "det här borde hända");
+        return taskService.createDefaultTaskForUser(task, userId);
+    }
+
 }

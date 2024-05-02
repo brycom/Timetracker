@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.TimetrackerBackend.TimetrackerBackend.models.Category;
@@ -80,13 +81,29 @@ public class TaskService {
     }
 
     public Task createTask(Task task) {
-        return mongoOperations.insert(task);
+        return mongoOperations.save(task, "Tasks");
     }
 
     public Task addTaskToUser(Task task, String userId) {
         User user = mongoOperations.findById(userId, User.class);
         user.addTask(task);
         user.setTotalTimeInMinutes(user.getTotalTimeInMinutes() + (int) task.getTimeSpent());
+        mongoOperations.save(user);
+        return task;
+    }
+
+    public List<Task> getDefaultTaskUser(String userId) {
+        return mongoOperations.findById(userId, User.class).getDefaultTasks();
+    }
+
+    public List<Task> getDefaultTasks() {
+
+        return mongoOperations.find(new Query(), Task.class, "Tasks");
+    }
+
+    public Task createDefaultTaskForUser(Task task, String userId) {
+        User user = mongoOperations.findById(userId, User.class);
+        user.addDefaultTask(task);
         mongoOperations.save(user);
         return task;
     }
