@@ -1,5 +1,6 @@
 package com.TimetrackerBackend.TimetrackerBackend.contollers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -8,11 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.TimetrackerBackend.TimetrackerBackend.models.Statistics;
-import com.TimetrackerBackend.TimetrackerBackend.models.Task;
+
 import com.TimetrackerBackend.TimetrackerBackend.models.User;
 import com.TimetrackerBackend.TimetrackerBackend.services.TaskService;
 import com.TimetrackerBackend.TimetrackerBackend.services.UserService;
@@ -51,6 +52,17 @@ public class UserController {
     @ResponseBody
     public Statistics getStatistics(@PathVariable String id) {
         return taskService.getStatistics(id);
+    }
+
+    @GetMapping("/statistics/{id}/{startDateStr}/{endDateStr}")
+    @ResponseBody
+    public Statistics getStatistics(@PathVariable String id, @PathVariable String startDateStr,
+            @PathVariable String endDateStr) {
+
+        LocalDate startDate = LocalDate.parse(startDateStr);
+        LocalDate endDate = LocalDate.parse(endDateStr);
+        return taskService.getStatisticsForDates(id, startDate, endDate);
+
     }
 
     @PostMapping("/login")

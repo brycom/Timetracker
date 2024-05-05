@@ -1,19 +1,20 @@
 package com.TimetrackerBackend.TimetrackerBackend.contollers;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.TimetrackerBackend.TimetrackerBackend.models.Statistics;
 import com.TimetrackerBackend.TimetrackerBackend.models.Task;
 import com.TimetrackerBackend.TimetrackerBackend.services.TaskService;
-
-import jakarta.websocket.server.PathParam;
 
 @Controller
 @CrossOrigin("*")
@@ -37,10 +38,48 @@ public class TaskController {
         return taskService.addTaskToUser(task, userId);
     }
 
-    /*     @GetMapping("/statistics/{id}")
+    @GetMapping("/defaulttasks/{userId}")
     @ResponseBody
-    public Statistics getStatistics(@PathVariable String id) {
-        return taskService.getStatistics(id);
+    public List<Task> getDefaultTaskUser(@PathVariable String userId) {
+        return taskService.getDefaultTaskUser(userId);
     }
-     */
+
+    @GetMapping("/defaulttasks")
+    @ResponseBody
+    public List<Task> getDefaultTasks() {
+        return taskService.getDefaultTasks();
+    }
+
+    @PostMapping("/defaulttasks/{userId}")
+    @ResponseBody
+    public Task createDefaultTaskForUser(@RequestBody Task task, @PathVariable String userId) {
+        System.out.println(task.getHeadline() + "det här borde hända");
+        return taskService.createDefaultTaskForUser(task, userId);
+    }
+
+    @PatchMapping("/defaulttasks/{taskId}")
+    @ResponseBody
+    public Task updateDefaultTask(@RequestBody Task task, @PathVariable String taskId) {
+        return taskService.updateDefaultTask(task, taskId);
+    }
+
+    @PatchMapping("/defaulttasks/{userId}/{taskId}")
+    @ResponseBody
+    public Task updateDefaultTaskForUser(@RequestBody Task task, @PathVariable String userId,
+            @PathVariable String taskId) {
+        return taskService.updateDefaultTaskForUser(task, userId, taskId);
+    }
+
+    @DeleteMapping("/defaulttasks/{taskId}")
+    @ResponseBody
+    public String deliteDefaultTask(@PathVariable String taskId) {
+        return taskService.deliteDefaultTask(taskId);
+    }
+
+    @DeleteMapping("/defaulttasks/{userId}/{taskId}")
+    @ResponseBody
+    public String deliteDefaultTaskForUser(@PathVariable String userId, @PathVariable String taskId) {
+        return taskService.deliteDefaultTaskForUser(userId, taskId);
+    }
+
 }
