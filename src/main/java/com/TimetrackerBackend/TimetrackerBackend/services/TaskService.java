@@ -28,28 +28,27 @@ public class TaskService {
 
     public Statistics getStatistics(String id) {
         User user = mongoOperations.findById(id, User.class);
+        List<Task> tasks = user.getTasks();
+        int timeSpent = 0;
         List<Category> timePerCategory = new ArrayList<Category>();
-        for (Task task : user.getTasks()) {
 
-            if (timePerCategory.size() <= 0) {
-                timePerCategory.add(new Category(task.getCategory(), (int) task.getTimeSpent()));
+        for (Task task : tasks) {
+            timeSpent += task.getTimeSpent();
+            boolean categoryFound = false;
 
-            } else {
-                for (Category category : timePerCategory) {
-                    if (task.getCategory().equals(category.getCategory())) {
-
-                        category.setTimeSpent(category.getTimeSpent() + (int) task.getTimeSpent());
-                        System.out.println("i if");
-                        break;
-                    } else {
-                        timePerCategory.add(new Category(task.getCategory(), (int) task.getTimeSpent()));
-                        System.out.println("i else");
-                        break;
-                    }
+            for (Category category : timePerCategory) {
+                if (task.getCategory().equals(category.getCategory())) {
+                    category.setTimeSpent(category.getTimeSpent() + (int) task.getTimeSpent());
+                    categoryFound = true;
+                    break;
                 }
             }
+
+            if (!categoryFound) {
+                timePerCategory.add(new Category(task.getCategory(), (int) task.getTimeSpent()));
+            }
         }
-        Statistics statistics = new Statistics(user.getName(), user.getTotalTimeInMinutes(), timePerCategory,
+        Statistics statistics = new Statistics(user.getName(), timeSpent, timePerCategory,
                 user.getTasks());
 
         return statistics;
@@ -60,22 +59,21 @@ public class TaskService {
         List<Task> tasks = user.getTasksForDates(startDate, endDate);
         int timeSpent = 0;
         List<Category> timePerCategory = new ArrayList<Category>();
+
         for (Task task : tasks) {
             timeSpent += task.getTimeSpent();
-            if (timePerCategory.size() <= 0) {
-                timePerCategory.add(new Category(task.getCategory(), (int) task.getTimeSpent()));
+            boolean categoryFound = false;
 
-            } else {
-                for (Category category : timePerCategory) {
-                    if (task.getCategory().equals(category.getCategory())) {
-
-                        category.setTimeSpent(category.getTimeSpent() + (int) task.getTimeSpent());
-                        break;
-                    } else {
-                        timePerCategory.add(new Category(task.getCategory(), (int) task.getTimeSpent()));
-                        break;
-                    }
+            for (Category category : timePerCategory) {
+                if (task.getCategory().equals(category.getCategory())) {
+                    category.setTimeSpent(category.getTimeSpent() + (int) task.getTimeSpent());
+                    categoryFound = true;
+                    break;
                 }
+            }
+
+            if (!categoryFound) {
+                timePerCategory.add(new Category(task.getCategory(), (int) task.getTimeSpent()));
             }
         }
         Statistics statistics = new Statistics(user.getName(), timeSpent, timePerCategory,
