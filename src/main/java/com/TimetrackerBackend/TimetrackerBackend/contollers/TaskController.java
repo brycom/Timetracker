@@ -38,6 +38,13 @@ public class TaskController {
         return taskService.addTaskToUser(task, userId);
     }
 
+    @GetMapping("task/{userId}")
+    @ResponseBody
+    public List<Task> getTasksForUser(@PathVariable String userId) {
+        System.out.println("Hamnar vi ens här?");
+        return taskService.getTasksForUser(userId);
+    }
+
     @GetMapping("/defaulttasks/{userId}")
     @ResponseBody
     public List<Task> getDefaultTaskUser(@PathVariable String userId) {

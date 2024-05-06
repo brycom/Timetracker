@@ -169,4 +169,9 @@ public class TaskService {
         return "DELETED";
     }
 
+    public List<Task> getTasksForUser(String userId) {
+        User user = mongoOperations.findById(userId, User.class);
+        return user.getTasks();
+    }
+
 }
