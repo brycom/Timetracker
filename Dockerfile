@@ -2,7 +2,7 @@ FROM eclipse-temurin:21-jdk-jammy as builder
 WORKDIR /opt/app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-run chmod +x mvnw
+RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline
 COPY ./src ./src
 RUN ./mvnw clean install -DskipTests

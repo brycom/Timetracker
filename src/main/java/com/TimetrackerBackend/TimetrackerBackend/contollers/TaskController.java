@@ -41,6 +41,7 @@ public class TaskController {
     @GetMapping("/defaulttasks/{userId}")
     @ResponseBody
     public List<Task> getDefaultTaskUser(@PathVariable String userId) {
+        System.out.println("nu har du hamnat fel din jävel");
         return taskService.getDefaultTaskUser(userId);
     }
 

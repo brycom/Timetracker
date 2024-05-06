@@ -90,10 +90,12 @@ public class TaskService {
 
     public Task addTaskToUser(Task task, String userId) {
         User user = mongoOperations.findById(userId, User.class);
+        System.out.println(user.getName());
+        System.out.println(task.getHeadline());
         task.setId(UUID.randomUUID().toString());
         user.addTask(task);
         user.setTotalTimeInMinutes(user.getTotalTimeInMinutes() + (int) task.getTimeSpent());
-        mongoOperations.insert(user);
+        mongoOperations.save(user);
         return task;
     }
 
@@ -107,6 +109,7 @@ public class TaskService {
     }
 
     public Task createDefaultTaskForUser(Task task, String userId) {
+        System.out.println(task.getHeadline());
         User user = mongoOperations.findById(userId, User.class);
         task.setId(UUID.randomUUID().toString());
         user.addDefaultTask(task);
