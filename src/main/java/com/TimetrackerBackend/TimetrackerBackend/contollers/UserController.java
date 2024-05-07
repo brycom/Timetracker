@@ -3,14 +3,13 @@ package com.TimetrackerBackend.TimetrackerBackend.contollers;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.TimetrackerBackend.TimetrackerBackend.models.Statistics;
 
@@ -18,7 +17,7 @@ import com.TimetrackerBackend.TimetrackerBackend.models.User;
 import com.TimetrackerBackend.TimetrackerBackend.services.TaskService;
 import com.TimetrackerBackend.TimetrackerBackend.services.UserService;
 
-@Controller
+@RestController
 @CrossOrigin("*")
 public class UserController {
 
@@ -31,31 +30,26 @@ public class UserController {
     }
 
     @GetMapping("/")
-    @ResponseBody
     public List<User> getUser() {
         return userService.getUsers();
     }
 
     @PostMapping("/user")
-    @ResponseBody
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
     @GetMapping("/totaltime/{id}")
-    @ResponseBody
     public int getTotalTimeInMinutes(@PathVariable String id) {
         return userService.getTotalTimeInMinutes(id);
     }
 
     @GetMapping("/statistics/{id}")
-    @ResponseBody
     public Statistics getStatistics(@PathVariable String id) {
         return taskService.getStatistics(id);
     }
 
     @GetMapping("/statistics/{id}/{startDateStr}/{endDateStr}")
-    @ResponseBody
     public Statistics getStatistics(@PathVariable String id, @PathVariable String startDateStr,
             @PathVariable String endDateStr) {
 
@@ -66,13 +60,11 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @ResponseBody
     public User login(@RequestBody User user) {
         return userService.login(user);
     }
 
     @PostMapping("/logout")
-    @ResponseBody
     public User logout(@RequestBody User user) {
         return userService.login(user);
     }
