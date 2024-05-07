@@ -2,40 +2,57 @@ package com.TimetrackerBackend.TimetrackerBackend.models;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Document(collection = "Users")
-public class User {
+public class User implements UserDetails {
     @Id
     private String id;
     private String name;
     private String email;
     private String username;
     private String password;
-    private String role;
-    private String token;
+    private Set<Role> role;
     private List<Task> tasks;
     private List<Task> defaultTasks;
     private int totalTimeInMinutes;
 
     public User() {
+        super();
+        this.role = new HashSet<Role>();
     }
 
-    public User(String id, String name, String email, String username, String password, String role, String token,
+    public User(String id, String name, String email, String username, String password, Set<Role> role,
             List<Task> tasks, List<Task> defaultTasks, int totalTimeInMinutes) {
+        super();
         this.id = id;
         this.name = name;
         this.email = email;
         this.username = username;
         this.password = password;
         this.role = role;
-        this.token = token;
         this.tasks = tasks;
         this.defaultTasks = defaultTasks;
         this.totalTimeInMinutes = totalTimeInMinutes;
+    }
+
+    public User(String id, String name, String email, String username, String password, Set<Role> role) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+
     }
 
     public String getId() {
@@ -78,20 +95,12 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public Set<Role> getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Set<Role> role) {
         this.role = role;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public void addTask(Task task) {
@@ -136,6 +145,31 @@ public class User {
 
     public void addDefaultTask(Task task) {
         defaultTasks.add(task);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.role;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
 }

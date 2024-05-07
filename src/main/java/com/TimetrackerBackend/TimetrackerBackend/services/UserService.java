@@ -3,20 +3,26 @@ package com.TimetrackerBackend.TimetrackerBackend.services;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.TimetrackerBackend.TimetrackerBackend.models.User;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
+
     private final MongoOperations mongoOperations;
 
-    public UserService(MongoOperations mongoOperations) {
-        this.mongoOperations = mongoOperations;
-    }
+    //private PasswordEncoder passwordEncoder;
 
-    public User createUser(User user) {
-        return mongoOperations.insert(user);
+    public UserService(MongoOperations mongoOperations/* , PasswordEncoder passwordEncoder */) {
+        this.mongoOperations = mongoOperations;
+        //this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getUsers() {
@@ -28,9 +34,15 @@ public class UserService {
         return mongoOperations.findById(id, User.class).getTotalTimeInMinutes();
     }
 
-    public User login(User user) {
-
-        throw new UnsupportedOperationException("Unimplemented method 'login'");
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("userservice");
+        Query query = Query.query(Criteria.where("username").is(username));
+        User user = mongoOperations.findOne(query, User.class);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return user;
     }
 
 }
