@@ -172,4 +172,31 @@ public class TaskService {
         return user.getTasks();
     }
 
+    public List<Task> startTask(String userId, String taskId, String startTime) {
+        User user = mongoOperations.findById(userId, User.class);
+        List<Task> tasks = user.getTasks();
+        for (Task t : tasks) {
+            if (t.getId().equals(taskId)) {
+                t.setStartTime(startTime);
+                mongoOperations.save(user);
+
+            }
+        }
+        return tasks;
+    }
+
+    public List<Task> stopTask(String userId, String taskId, String endTime) {
+        User user = mongoOperations.findById(userId, User.class);
+        List<Task> tasks = user.getTasks();
+        for (Task t : tasks) {
+            if (t.getId().equals(taskId)) {
+                t.setEndTime(endTime);
+                mongoOperations.save(user);
+
+            }
+        }
+        return tasks;
+
+    }
+
 }

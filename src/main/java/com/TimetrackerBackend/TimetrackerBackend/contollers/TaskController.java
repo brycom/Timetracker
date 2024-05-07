@@ -90,4 +90,19 @@ public class TaskController {
         return taskService.deliteDefaultTaskForUser(userId, taskId);
     }
 
+    @PatchMapping("/starttask/{userId}/{taskId}/{startTime}")
+    @ResponseBody
+    public List<Task> startTask(@PathVariable String userId, @PathVariable String taskId,
+            @PathVariable String startTime) {
+        return taskService.startTask(userId, taskId, startTime);
+    }
+
+    @PatchMapping("/stoptask/{userId}/{taskId}/{endTime}")
+    @ResponseBody
+    public List<Task> stopTask(@PathVariable String userId, @PathVariable String taskId,
+            @PathVariable String endTime) {
+
+        return taskService.stopTask(userId, taskId, endTime);
+    }
+
 }
